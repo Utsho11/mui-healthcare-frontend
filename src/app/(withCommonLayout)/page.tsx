@@ -1,10 +1,9 @@
-import { Button } from "@mui/material";
+import HeroSection from "@/components/UI/Homepage/HeroSection/HeroSection";
 
 export default function HomePage() {
   return (
     <div className="">
-      <h1>Home Page</h1>
-      <Button>Text</Button>
+      <HeroSection />
     </div>
   );
 }
