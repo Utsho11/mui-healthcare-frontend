@@ -59,7 +59,7 @@ const TopRatedDoctor = async () => {
       >
         <Grid container spacing={2}>
           {doctors.map((doctor: any) => (
-            <Grid item key={doctor.id} size={{ md: 4 }}>
+            <Grid key={doctor.id} size={{ md: 4 }}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                   sx={{ height: 240 }}
