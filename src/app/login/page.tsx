@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import assets from "@/assets";
-import { Grade } from "@mui/icons-material";
 import Link from "next/link";
 
 const LoginPage = () => {
@@ -43,7 +42,7 @@ const LoginPage = () => {
             </Box>
             <Box>
               <Typography variant="h6" fontWeight={600}>
-                Login PH HealthCare
+                Login MUI HealthCare
               </Typography>
             </Box>
           </Stack>
@@ -67,6 +66,7 @@ const LoginPage = () => {
               <Grid size={{ md: 6 }}>
                 <TextField
                   label="Password"
+                  type="password"
                   variant="outlined"
                   size="small"
                   fullWidth={true}

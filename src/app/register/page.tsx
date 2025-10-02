@@ -13,6 +13,9 @@ import assets from "@/assets";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import modifyPayload from "@/utils/modifyPayload";
+import { registerPatient } from "@/services/action/registerPatient";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface IPatientData {
   name: string;
@@ -27,9 +30,19 @@ interface IPatientFormData {
 }
 
 const RegisterPage = () => {
+  const router = useRouter();
   const { register, handleSubmit } = useForm<IPatientFormData>();
-  const onSubmit: SubmitHandler<IPatientFormData> = (values) => {
+  const onSubmit: SubmitHandler<IPatientFormData> = async (values) => {
     const data = modifyPayload(values);
+    try {
+      const res = await registerPatient(data);
+      if (res?.data?.id) {
+        toast.success(res?.message);
+        router.push("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     // console.log(data.get("data"));
   };
 
@@ -99,6 +112,7 @@ const RegisterPage = () => {
                   <Grid size={{ md: 6 }}>
                     <TextField
                       label="Password"
+                      type="password"
                       variant="outlined"
                       size="small"
                       fullWidth={true}
