@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import assets from "@/assets";
+import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -66,7 +66,7 @@ const LoginPage = () => {
             }}
           >
             <Box>
-              <Image src={assets.svgs.logo} width={50} height={50} alt="logo" />
+              <Image src={logo} width={50} height={50} alt="logo" />
             </Box>
             <Box>
               <Typography variant="h6" fontWeight={600}>

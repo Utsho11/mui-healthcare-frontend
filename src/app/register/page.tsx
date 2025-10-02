@@ -9,13 +9,15 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import assets from "@/assets";
+import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import modifyPayload from "@/utils/modifyPayload";
 import { registerPatient } from "@/services/action/registerPatient";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { userLogin } from "@/services/action/userLogin";
+import { storeUserInfo } from "@/services/auth.service";
 
 interface IPatientData {
   name: string;
@@ -38,7 +40,14 @@ const RegisterPage = () => {
       const res = await registerPatient(data);
       if (res?.data?.id) {
         toast.success(res?.message);
-        router.push("/login");
+        const result = await userLogin({
+          email: values.patient.email,
+          password: values.password,
+        });
+        if (result?.data?.accessToken) {
+          storeUserInfo(result?.data?.accessToken);
+          router.push("/");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -72,7 +81,7 @@ const RegisterPage = () => {
             }}
           >
             <Box>
-              <Image src={assets.svgs.logo} width={50} height={50} alt="logo" />
+              <Image src={logo} width={50} height={50} alt="logo" />
             </Box>
             <Box>
               <Typography variant="h6" fontWeight={600}>

@@ -20,7 +20,6 @@ const TopRatedDoctor = async () => {
   return (
     <Box
       sx={{
-        my: 10,
         py: 30,
         backgroundColor: "rgb(20,20,20,0.1)",
         clipPath: "polygon(0 0,100% 25%, 100% 100%, 0% 75%)",
