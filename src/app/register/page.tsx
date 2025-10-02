@@ -114,7 +114,7 @@ const RegisterPage = () => {
               fullWidth={true}
               type="submit"
             >
-              Register
+              REGISTER
             </Button>
             <Typography component="p" fontWeight={300}>
               Do you already have an account?{" "}
