@@ -1,40 +1,24 @@
 "use client";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { type FieldValues } from "react-hook-form";
 import modifyPayload from "@/utils/modifyPayload";
 import { registerPatient } from "@/services/action/registerPatient";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { userLogin } from "@/services/action/userLogin";
 import { storeUserInfo } from "@/services/auth.service";
+import MUIForm from "@/components/Form/MUIForm";
+import MUIInput from "@/components/Form/MUIInput";
+import { z } from "zod";
 
-interface IPatientData {
-  name: string;
-  email: string;
-  contactNumber: string;
-  address: string;
-}
 
-interface IPatientFormData {
-  password: string;
-  patient: IPatientData;
-}
 
 const RegisterPage = () => {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<IPatientFormData>();
-  const onSubmit: SubmitHandler<IPatientFormData> = async (values) => {
+  const handleRegister = async (values: FieldValues) => {
     const data = modifyPayload(values);
     try {
       const res = await registerPatient(data);
@@ -90,15 +74,16 @@ const RegisterPage = () => {
             </Box>
           </Stack>
           <Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <MUIForm onSubmit={handleRegister}>
               <Grid container my={1}>
                 <Grid size={{ md: 12 }} my={1}>
-                  <TextField
+                  <MUIInput
+                    name="patient.name"
                     label="Name"
+                    required={true}
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("patient.name")}
                   />
                 </Grid>
                 <Grid
@@ -110,22 +95,24 @@ const RegisterPage = () => {
                   }}
                 >
                   <Grid size={{ md: 6 }}>
-                    <TextField
+                    <MUIInput
                       label="Email"
                       variant="outlined"
                       size="small"
                       fullWidth={true}
-                      {...register("patient.email")}
+                      required={true}
+                      name="patient.email"
                     />
                   </Grid>
                   <Grid size={{ md: 6 }}>
-                    <TextField
+                    <MUIInput
                       label="Password"
                       type="password"
                       variant="outlined"
                       size="small"
                       fullWidth={true}
-                      {...register("password")}
+                      name="password"
+                      required={true}
                     />
                   </Grid>
                 </Grid>
@@ -138,21 +125,23 @@ const RegisterPage = () => {
                   }}
                 >
                   <Grid size={{ md: 6 }}>
-                    <TextField
+                    <MUIInput
                       label="Contact Number"
                       variant="outlined"
+                      required={true}
                       size="small"
                       fullWidth={true}
-                      {...register("patient.contactNumber")}
+                      name="patient.contactNumber"
                     />
                   </Grid>
                   <Grid size={{ md: 6 }}>
-                    <TextField
+                    <MUIInput
                       label="Address"
+                      required={true}
                       variant="outlined"
                       size="small"
                       fullWidth={true}
-                      {...register("patient.address")}
+                      name="patient.address"
                     />
                   </Grid>
                 </Grid>
@@ -174,7 +163,7 @@ const RegisterPage = () => {
                   </Typography>
                 </Link>
               </Typography>
-            </form>
+            </MUIForm>
           </Box>
         </Box>
       </Stack>

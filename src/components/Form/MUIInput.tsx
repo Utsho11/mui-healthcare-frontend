@@ -1,13 +1,16 @@
-import { TextField } from "@mui/material";
+import { TextField, type SxProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 type TFormInput = {
   name: string;
   label: string;
-  type: string;
-  variant: "filled" | "outlined" | "standard";
-  size: "small" | "medium";
-  fullWidth: boolean;
+  type?: string;
+  variant?: "filled" | "outlined" | "standard";
+  size?: "small" | "medium";
+  fullWidth?: boolean;
+  sx?: SxProps;
+  placeholder?: string;
+  required: boolean;
 };
 
 const MUIInput = ({
@@ -17,6 +20,9 @@ const MUIInput = ({
   type = "text",
   size,
   fullWidth,
+  sx,
+  placeholder,
+  required,
 }: TFormInput) => {
   const { control } = useFormContext();
 
@@ -33,6 +39,9 @@ const MUIInput = ({
           variant={variant}
           size={size}
           fullWidth={fullWidth}
+          sx={{ ...sx }}
+          placeholder={placeholder}
+          required={required}
         />
       )}
     />

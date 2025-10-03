@@ -1,13 +1,5 @@
 "use client";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
@@ -18,6 +10,13 @@ import { storeUserInfo } from "@/services/auth.service";
 import MUIForm from "@/components/Form/MUIForm";
 import type { FieldValues } from "react-hook-form";
 import MUIInput from "@/components/Form/MUIInput";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export const validationScheme = z.object({
+  email: z.email("Please enter a valid email address!"),
+  password: z.string().min(6, "Must be at least 6 characters"),
+});
 
 const LoginPage = () => {
   const router = useRouter();
@@ -70,7 +69,7 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
-          <MUIForm onSubmit={handleLogin}>
+          <MUIForm onSubmit={handleLogin} resolver={zodResolver(validationScheme)}>
             <Grid container my={1}>
               <Grid
                 size={{ md: 12 }}
@@ -87,6 +86,8 @@ const LoginPage = () => {
                     variant="outlined"
                     type="email"
                     size="small"
+                    required={true}
+                    placeholder="Email"
                     fullWidth={true}
                   />
                 </Grid>
@@ -97,6 +98,8 @@ const LoginPage = () => {
                     type="password"
                     variant="outlined"
                     size="small"
+                    placeholder="Password"
+                    required={true}
                     fullWidth={true}
                   />
                 </Grid>
