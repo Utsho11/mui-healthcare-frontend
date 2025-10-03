@@ -12,20 +12,16 @@ import Image from "next/image";
 import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import { userLogin } from "@/services/action/userLogin";
 import { useRouter } from "next/navigation";
 import { storeUserInfo } from "@/services/auth.service";
-
-export interface IFormValue {
-  email: string;
-  password: string;
-}
+import MUIForm from "@/components/Form/MUIForm";
+import type { FieldValues } from "react-hook-form";
+import MUIInput from "@/components/Form/MUIInput";
 
 const LoginPage = () => {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<IFormValue>();
-  const onSubmit: SubmitHandler<IFormValue> = async (values) => {
+  const handleLogin = async (values: FieldValues) => {
     try {
       // console.log(values);
       const res = await userLogin(values);
@@ -74,7 +70,7 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <MUIForm onSubmit={handleLogin}>
             <Grid container my={1}>
               <Grid
                 size={{ md: 12 }}
@@ -85,22 +81,23 @@ const LoginPage = () => {
                 }}
               >
                 <Grid size={{ md: 6 }}>
-                  <TextField
+                  <MUIInput
+                    name="email"
                     label="Email"
                     variant="outlined"
+                    type="email"
                     size="small"
                     fullWidth={true}
-                    {...register("email")}
                   />
                 </Grid>
                 <Grid size={{ md: 6 }}>
-                  <TextField
+                  <MUIInput
+                    name="password"
                     label="Password"
                     type="password"
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    {...register("password")}
                   />
                 </Grid>
               </Grid>
@@ -125,7 +122,7 @@ const LoginPage = () => {
                 <Link href="/register">Create an account</Link>
               </Typography>
             </Typography>
-          </form>
+          </MUIForm>
         </Box>
       </Stack>
     </Container>
