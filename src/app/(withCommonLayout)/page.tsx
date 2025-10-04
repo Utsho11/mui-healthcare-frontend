@@ -4,16 +4,17 @@ import Specialist from "@/components/UI/Homepage/Specialist/Specialist";
 import Stats from "@/components/UI/Homepage/Stats/Stats";
 import TopRatedDoctor from "@/components/UI/Homepage/TopRatedDoctor/TopRatedDoctor";
 import WhyUs from "@/components/UI/Homepage/WhyUs/WhyUs";
+import { Box } from "@mui/material";
 
 export default function HomePage() {
   return (
-    <div className="">
+    <Box>
       <HeroSection />
       <Specialist />
       <TopRatedDoctor />
       <WhyUs />
       <HowItWorks />
       <Stats />
-    </div>
+    </Box>
   );
 }
