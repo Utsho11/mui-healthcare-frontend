@@ -13,8 +13,21 @@ import { storeUserInfo } from "@/services/auth.service";
 import MUIForm from "@/components/Form/MUIForm";
 import MUIInput from "@/components/Form/MUIInput";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+export const patientValidationSchema = z.object({
+  name: z.string().min(1, "Please enter your name!"),
+  email: z.email("Please enter a valid email address!"),
+  contactNumber: z
+    .string()
+    .regex(/^\d{11}$/, "Please provide a valid phone number!"),
+  address: z.string().min(1, "Please enter your address!"),
+});
 
+export const validationSchema = z.object({
+  password: z.string().min(6, "Must be at least 6 characters"),
+  patient: patientValidationSchema,
+});
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -74,13 +87,22 @@ const RegisterPage = () => {
             </Box>
           </Stack>
           <Box>
-            <MUIForm onSubmit={handleRegister}>
+            <MUIForm
+              onSubmit={handleRegister}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={{
+                ["patient.name"]: "",
+                ["patient.email"]: "",
+                ["patient.address"]: "",
+                ["patient.contactNumber"]: "",
+                password: "",
+              }}
+            >
               <Grid container my={1}>
                 <Grid size={{ md: 12 }} my={1}>
                   <MUIInput
                     name="patient.name"
                     label="Name"
-                    required={true}
                     variant="outlined"
                     size="small"
                     fullWidth={true}
@@ -100,7 +122,6 @@ const RegisterPage = () => {
                       variant="outlined"
                       size="small"
                       fullWidth={true}
-                      required={true}
                       name="patient.email"
                     />
                   </Grid>
@@ -112,7 +133,6 @@ const RegisterPage = () => {
                       size="small"
                       fullWidth={true}
                       name="password"
-                      required={true}
                     />
                   </Grid>
                 </Grid>
@@ -128,7 +148,6 @@ const RegisterPage = () => {
                     <MUIInput
                       label="Contact Number"
                       variant="outlined"
-                      required={true}
                       size="small"
                       fullWidth={true}
                       name="patient.contactNumber"
@@ -137,7 +156,6 @@ const RegisterPage = () => {
                   <Grid size={{ md: 6 }}>
                     <MUIInput
                       label="Address"
-                      required={true}
                       variant="outlined"
                       size="small"
                       fullWidth={true}

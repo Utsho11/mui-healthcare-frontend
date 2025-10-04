@@ -10,7 +10,7 @@ type TFormInput = {
   fullWidth?: boolean;
   sx?: SxProps;
   placeholder?: string;
-  required: boolean;
+  required?: boolean;
 };
 
 const MUIInput = ({
@@ -30,7 +30,7 @@ const MUIInput = ({
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           value={field.value ?? ""}
@@ -42,6 +42,8 @@ const MUIInput = ({
           sx={{ ...sx }}
           placeholder={placeholder}
           required={required}
+          error={!!error?.message}
+          helperText={error?.message}
         />
       )}
     />

@@ -69,7 +69,14 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
-          <MUIForm onSubmit={handleLogin} resolver={zodResolver(validationScheme)}>
+          <MUIForm
+            onSubmit={handleLogin}
+            resolver={zodResolver(validationScheme)}
+            defaultValues={{
+              email: "",
+              password: "",
+            }}
+          >
             <Grid container my={1}>
               <Grid
                 size={{ md: 12 }}
@@ -86,7 +93,6 @@ const LoginPage = () => {
                     variant="outlined"
                     type="email"
                     size="small"
-                    required={true}
                     placeholder="Email"
                     fullWidth={true}
                   />
@@ -99,7 +105,6 @@ const LoginPage = () => {
                     variant="outlined"
                     size="small"
                     placeholder="Password"
-                    required={true}
                     fullWidth={true}
                   />
                 </Grid>

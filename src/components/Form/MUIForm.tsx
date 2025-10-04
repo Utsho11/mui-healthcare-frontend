@@ -7,6 +7,7 @@ import {
 
 type TFormConfig = {
   resolver?: any;
+  defaultValues?: Record<string,any>
 };
 
 type TFormProps = {
@@ -14,13 +15,16 @@ type TFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
 } & TFormConfig;
 
-const MUIForm = ({ children, onSubmit, resolver }: TFormProps) => {
+const MUIForm = ({ children, onSubmit, resolver,defaultValues }: TFormProps) => {
   const formConfig: TFormConfig = {};
 
   if (resolver) {
     formConfig["resolver"] = resolver;
   }
-
+  
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
   const methods = useForm(formConfig);
   const { handleSubmit } = methods;
 
