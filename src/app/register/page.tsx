@@ -14,6 +14,7 @@ import MUIForm from "@/components/Form/MUIForm";
 import MUIInput from "@/components/Form/MUIInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 export const patientValidationSchema = z.object({
   name: z.string().min(1, "Please enter your name!"),
@@ -31,6 +32,7 @@ export const validationSchema = z.object({
 
 const RegisterPage = () => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const handleRegister = async (values: FieldValues) => {
     const data = modifyPayload(values);
     try {
@@ -45,6 +47,8 @@ const RegisterPage = () => {
           storeUserInfo(result?.data?.accessToken);
           router.push("/");
         }
+      } else {
+        setError(res.message);
       }
     } catch (error) {
       console.log(error);
@@ -86,6 +90,21 @@ const RegisterPage = () => {
               </Typography>
             </Box>
           </Stack>
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "1px",
+                  borderRadius: "2px",
+                  color: "white",
+                  marginTop: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
           <Box>
             <MUIForm
               onSubmit={handleRegister}

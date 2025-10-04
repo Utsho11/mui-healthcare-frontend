@@ -12,6 +12,7 @@ import type { FieldValues } from "react-hook-form";
 import MUIInput from "@/components/Form/MUIInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 
 export const validationScheme = z.object({
   email: z.email("Please enter a valid email address!"),
@@ -19,6 +20,7 @@ export const validationScheme = z.object({
 });
 
 const LoginPage = () => {
+  const [error, setError] = useState("");
   const router = useRouter();
   const handleLogin = async (values: FieldValues) => {
     try {
@@ -28,6 +30,8 @@ const LoginPage = () => {
         toast.success(res?.message);
         storeUserInfo(res?.data?.accessToken);
         router.push("/");
+      } else {
+        setError(res.message);
       }
     } catch (error) {
       console.log(error);
@@ -69,6 +73,21 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          {error && (
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "1px",
+                  borderRadius: "2px",
+                  color: "white",
+                  marginTop: "5px",
+                }}
+              >
+                {error}
+              </Typography>
+            </Box>
+          )}
           <MUIForm
             onSubmit={handleLogin}
             resolver={zodResolver(validationScheme)}
