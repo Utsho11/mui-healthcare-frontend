@@ -44,6 +44,9 @@ export default function DashboardDrawer({
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: "#F4F7FE",
+          boxShadow: 0,
+          border: "1px solid lightgrey",
         }}
       >
         <Toolbar>
@@ -52,13 +55,18 @@ export default function DashboardDrawer({
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ mr: 2, color: "primary.main", display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
+          <Box>
+            <Typography variant="body2" component="p" color="textSecondary">
+              Hi, Utsho roy👋
+            </Typography>
+            <Typography variant="body2" component="p" color="primary.main">
+              Welcome to MUI Healthcare.
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
