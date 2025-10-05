@@ -1,16 +1,23 @@
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+"use client";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logo from "@/assets/svgs/logo.svg";
 import Link from "next/link";
+import { drawerItems } from "@/utils/drawerItem";
+import type { UserRole } from "@/types";
+import SideBarItem from "./SideBarItem";
+import { getUserInfo } from "@/services/auth.service";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
+
+  useEffect(() => {
+    const info = getUserInfo();
+    setUserRole((info?.role as UserRole) ?? null);
+  }, []);
+
   const drawer = (
     <div>
       <Stack
@@ -35,16 +42,10 @@ const Sidebar = () => {
         </Typography>
       </Stack>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {userRole &&
+          drawerItems(userRole).map((item, index) => (
+            <SideBarItem key={index} item={item} />
+          ))}
       </List>
     </div>
   );
