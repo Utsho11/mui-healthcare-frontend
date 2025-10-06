@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { USER_ROLE } from "@/Constants/role";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -19,3 +20,19 @@ export interface DrawerItem {
   };
   child?: DrawerItem[];
 }
+
+export type ResponseSuccessType = {
+  data: any;
+  meta?: IMeta;
+};
+
+export type IGenericErrorResponse = {
+  statusCode: number;
+  message: string;
+  errorMessages: IGenericErrorMessage[];
+};
+
+export type IGenericErrorMessage = {
+  path: string | number;
+  message: string;
+};

@@ -27,10 +27,12 @@ export const axiosBaseQuery =
         data,
         params,
         headers: {
+          ...(headers || {}),
           "Content-Type": contentType || "application/json",
         },
       });
-      return result;
+      // axiosInstance response interceptor normalizes the data to { data, meta }
+      return result.data;
     } catch (axiosError) {
       const err = axiosError as AxiosError;
       return {

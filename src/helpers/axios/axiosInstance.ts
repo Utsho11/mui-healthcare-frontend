@@ -1,4 +1,5 @@
 import { authKey } from "@/Constants/Constants";
+import type { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage } from "@/utils/local-storage";
 import axios from "axios";
 
@@ -8,35 +9,48 @@ instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["accept"] = "application/json";
 instance.defaults.timeout = 60000;
 
-
 // Add a request interceptor
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(
+  function (config) {
     // Do something before request is sent
     const accessToken = getFromLocalStorage(authKey);
 
-    if(accessToken){
-        config.headers.Authorization = accessToken
+    if (accessToken) {
+      config.headers.Authorization = accessToken;
     }
 
     return config;
-  }, function (error) {
+  },
+  function (error) {
     // Do something with request error
     return Promise.reject(error);
-  },
-  { synchronous: true, runWhen: () => /* This function returns true */}
+  }
 );
 
 // Add a response interceptor
-instance.interceptors.response.use(function onFulfilled(response) {
+instance.interceptors.response.use(
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    return response;
-  }, function onRejected(error) {
+    const responseObject: ResponseSuccessType = {
+      data: response?.data?.data,
+      meta: response?.data?.meta,
+    };
+    return responseObject;
+  },
+  function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error);
-  });
-
-
+    const responseObject: IGenericErrorResponse = {
+      statusCode: error?.response?.data?.statusCode || 500,
+      message: error?.response?.data?.message || "Something went wrong!!!",
+      errorMessages: error?.response?.data?.message,
+    };
+    // return Promise.reject(error);
+    return responseObject;
+  }
+);
 
 export { instance };
