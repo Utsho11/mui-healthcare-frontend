@@ -62,11 +62,6 @@ export default function MUIModal({
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </React.Fragment>
   );
