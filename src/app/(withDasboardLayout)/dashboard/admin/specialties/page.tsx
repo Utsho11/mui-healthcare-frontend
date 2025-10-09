@@ -9,13 +9,21 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import SpecialityModal from "./component/SpecialityModal";
-import { useGaetAllSpecialityQuery } from "@/redux/api/specialitiesApi";
+import {
+  useDeleteSpecialityMutation,
+  useGaetAllSpecialityQuery,
+} from "@/redux/api/specialitiesApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "sonner";
 
 const SpecialtiesPage = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const { data, isLoading } = useGaetAllSpecialityQuery({});
+
+  const [deleteSpeciality] = useDeleteSpecialityMutation();
 
   const columns: GridColDef[] = [
     { field: "title", headerName: "Title", width: 300 },
@@ -23,15 +31,16 @@ const SpecialtiesPage = () => {
       field: "icon",
       headerName: "Icon",
       width: 300,
-
+      align: "center",
+      flex: 1,
       renderCell: ({ row }) => {
         return (
           <Box
             sx={{
-              py: 2,
+              pt: 1,
             }}
           >
-            <Image src={row.icon} width={20} height={20} alt="icon" />
+            <Image src={row.icon} width={30} height={30} alt="icon" />
           </Box>
         );
       },
@@ -40,6 +49,9 @@ const SpecialtiesPage = () => {
       field: "action",
       headerName: "Action",
       width: 400,
+      headerAlign: "center",
+      flex: 1,
+      align: "center",
       renderCell: ({ row }) => {
         return (
           <IconButton aria-label="delete" onClick={() => handleDelete(row.id)}>
@@ -50,12 +62,18 @@ const SpecialtiesPage = () => {
     },
   ];
 
-  const { data } = useGaetAllSpecialityQuery({});
-
   // console.log(data);
 
-  const handleDelete = (id: string) => {
-    console.log(id);
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteSpeciality(id).unwrap();
+      if (res?.id) {
+        toast.success("Speciality deleted successfully.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err?.message);
+    }
   };
 
   return (
@@ -65,9 +83,26 @@ const SpecialtiesPage = () => {
         <SpecialityModal open={isModalOpen} setOpen={setModalOpen} />
         <TextField size="small" placeholder="Search Speciality"></TextField>
       </Stack>
-      <Box>
-        <Typography>All Specialities</Typography>
-        <DataGrid rows={data} columns={columns} />
+      <Typography
+        variant="h4"
+        component="h3"
+        fontWeight={600}
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        All Specialities
+      </Typography>
+      <Box
+        sx={{
+          my: 2,
+        }}
+      >
+        {!isLoading ? (
+          <DataGrid rows={data} columns={columns} hideFooter={true} />
+        ) : (
+          <h1>Loading data...</h1>
+        )}
       </Box>
     </Box>
   );
