@@ -2,9 +2,12 @@ import MUIForm from "@/components/Form/MUIForm";
 import MUIInput from "@/components/Form/MUIInput";
 import MUISelectField from "@/components/Form/MUISelectField";
 import MUIFullScreenModal from "@/components/Shared/MUIModal/MUIFullScreenModal";
+import { useCreateDoctorMutation } from "@/redux/api/doctorApi";
 import { Gender } from "@/types";
+import modifyPayload from "@/utils/modifyPayload";
 import { Button, Grid } from "@mui/material";
 import type { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -30,7 +33,27 @@ const defaultValues = {
 };
 
 const DoctorModal = ({ open, setOpen }: TProps) => {
-  const handleFormSubmit = async (values: FieldValues) => {};
+  const [createDoctor] = useCreateDoctorMutation();
+
+  const handleFormSubmit = async (values: FieldValues) => {
+    values.doctor.experience = Number(values.doctor.experience);
+    values.doctor.apointmentFee = Number(values.doctor.apointmentFee);
+    const data = modifyPayload(values);
+
+    console.log(data.get("data"));
+
+    try {
+      const res = await createDoctor(data).unwrap();
+      console.log(res);
+      if (res?.id) {
+        toast.success("Doctor created successfully!!");
+        setOpen(false);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
 
   return (
     <MUIFullScreenModal open={open} setOpen={setOpen} title="Create New Doctor">

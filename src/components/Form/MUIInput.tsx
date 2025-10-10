@@ -18,7 +18,7 @@ const MUIInput = ({
   label,
   variant,
   type = "text",
-  size,
+  size = "small",
   fullWidth,
   sx,
   placeholder,
