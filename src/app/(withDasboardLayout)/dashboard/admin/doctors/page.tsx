@@ -12,8 +12,12 @@ import { useState } from "react";
 import type { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetAllDoctorsQuery } from "@/redux/api/doctorApi";
+import {
+  useDeleteDoctorMutation,
+  useGetAllDoctorsQuery,
+} from "@/redux/api/doctorApi";
 import { useDebounced } from "@/redux/hooks";
+import { toast } from "sonner";
 
 const DoctorsPage = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -64,8 +68,18 @@ const DoctorsPage = () => {
     },
   ];
 
-  const handleDelete = (id: string) => {
-    console.log(id);
+  const [deleteDoctor] = useDeleteDoctorMutation();
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteDoctor(id).unwrap();
+      if (res?.id) {
+        toast.success("Doctor deleted successfully.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err?.message);
+    }
   };
 
   return (
