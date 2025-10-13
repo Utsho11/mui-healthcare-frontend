@@ -2,9 +2,12 @@ import MUIDatePicker from "@/components/Form/MUIDatePicker";
 import MUIForm from "@/components/Form/MUIForm";
 import MUITimePicker from "@/components/Form/MUITimePicker";
 import MUIModal from "@/components/Shared/MUIModal/MUIModal";
+import { useCreateScheduleMutation } from "@/redux/api/scheduleApi";
 import { dateFormatter } from "@/utils/dateFormatter";
+import { timeFormatter } from "@/utils/timeFormatter";
 import { Button, Grid } from "@mui/material";
 import type { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -12,14 +15,22 @@ type TProps = {
 };
 
 const ScheduleModal = ({ open, setOpen }: TProps) => {
+  const [crateSchedule] = useCreateScheduleMutation();
+
   const handleFormSubmit = async (values: FieldValues) => {
     try {
       values.startDate = dateFormatter(values.startDate);
       values.endDate = dateFormatter(values.endDate);
-      values.startTime = dateFormatter(values.startTime);
-      values.endTime = dateFormatter(values.endTime);
+      values.startTime = timeFormatter(values.startTime);
+      values.endTime = timeFormatter(values.endTime);
 
-      console.log(values);
+      const res = await crateSchedule(values).unwrap();
+      console.log(res);
+      if (res?.length) {
+        toast.success("Schedule created successfully!!");
+        setOpen(false);
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err.message);

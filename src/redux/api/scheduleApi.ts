@@ -1,3 +1,4 @@
+import type { IMeta } from "@/types";
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -13,10 +14,18 @@ const scheduleApi = baseApi.injectEndpoints({
     }),
 
     getAllSchedule: build.query({
-      query: () => ({
-        url: "schedule",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      query: (args: Record<string, any>) => ({
+        url: "/schedule",
         method: "GET",
+        params: args,
       }),
+      transformResponse: (response: [], meta: IMeta) => {
+        return {
+          schedules: response,
+          meta,
+        };
+      },
       providesTags: [tagTypes.schedule],
     }),
 
