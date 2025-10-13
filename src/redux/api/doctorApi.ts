@@ -1,5 +1,5 @@
 import type { IDoctor } from "@/types/doctor";
-import { tagType } from "../tag-types";
+import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 import type { IMeta } from "@/types";
 
@@ -12,7 +12,7 @@ const doctorApi = baseApi.injectEndpoints({
         contentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagType.doctor],
+      invalidatesTags: [tagTypes.doctor],
     }),
 
     getAllDoctors: build.query({
@@ -28,7 +28,7 @@ const doctorApi = baseApi.injectEndpoints({
           meta,
         };
       },
-      providesTags: [tagType.doctor],
+      providesTags: [tagTypes.doctor],
     }),
 
     deleteDoctor: build.mutation({
@@ -36,7 +36,7 @@ const doctorApi = baseApi.injectEndpoints({
         url: `/doctor/soft/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagType.doctor],
+      invalidatesTags: [tagTypes.doctor],
     }),
   }),
 });

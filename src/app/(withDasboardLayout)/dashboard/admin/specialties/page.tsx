@@ -11,7 +11,7 @@ import { useState } from "react";
 import SpecialityModal from "./component/SpecialityModal";
 import {
   useDeleteSpecialityMutation,
-  useGaetAllSpecialityQuery,
+  useGetAllSpecialityQuery,
 } from "@/redux/api/specialitiesApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const SpecialtiesPage = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
-  const { data, isLoading } = useGaetAllSpecialityQuery({});
+  const { data, isLoading } = useGetAllSpecialityQuery({});
 
   const [deleteSpeciality] = useDeleteSpecialityMutation();
 

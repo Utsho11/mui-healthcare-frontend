@@ -1,13 +1,25 @@
-export enum tagType {
+export enum tagTypes {
   specialties = "specialties",
   admin = "admin",
-  patient = "patient",
   doctor = "doctor",
+  patient = "patient",
+  schedule = "schedule",
+  appointment = "appointment",
+  doctorSchedule = "doctorSchedule",
+  user = "user",
+  prescription = "prescription",
+  review = "review",
 }
 
-export const tagTypeList = [
-  tagType.specialties,
-  tagType.admin,
-  tagType.doctor,
-  tagType.patient,
+export const tagTypesList = [
+  tagTypes.specialties,
+  tagTypes.admin,
+  tagTypes.doctor,
+  tagTypes.patient,
+  tagTypes.schedule,
+  tagTypes.appointment,
+  tagTypes.doctorSchedule,
+  tagTypes.user,
+  tagTypes.prescription,
+  tagTypes.review,
 ];
