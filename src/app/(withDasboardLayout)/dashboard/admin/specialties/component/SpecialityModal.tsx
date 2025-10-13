@@ -16,6 +16,7 @@ type TProps = {
 
 const SpecialityModal = ({ open, setOpen }: TProps) => {
   const [createSpeciality] = useCreateSpecialityMutation();
+
   const handleFormSubmit = async (values: FieldValues) => {
     const data = modifyPayload(values);
     try {
@@ -30,6 +31,7 @@ const SpecialityModal = ({ open, setOpen }: TProps) => {
       console.error(err.message);
     }
   };
+
   return (
     <MUIModal open={open} setOpen={setOpen} title="Create Speciality">
       <MUIForm onSubmit={handleFormSubmit}>
