@@ -38,7 +38,6 @@ const MUITimePicker = ({
               onChange={(date) => onChange(date)}
               value={value || Date.now()}
               defaultValue={dayjs()}
-              disablePast
               slotProps={{
                 textField: {
                   required: required,

@@ -2,7 +2,10 @@
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import ScheduleModal from "./component/ScheduleModal";
 import { useEffect, useState } from "react";
-import { useGetAllScheduleQuery } from "@/redux/api/scheduleApi";
+import {
+  useDeleteScheduleMutation,
+  useGetAllScheduleQuery,
+} from "@/redux/api/scheduleApi";
 import type { ISchedule } from "@/types/schedule";
 import { dateFormatter } from "@/utils/dateFormatter";
 import dayjs from "dayjs";
@@ -10,9 +13,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import type { GridColDef } from "@mui/x-data-grid";
+import { toast } from "sonner";
 
 const SchedulesPage = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [deleteSchedule] = useDeleteScheduleMutation();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [allSchedule, setAllSchedule] = useState<any>([]);
   const { data, isLoading } = useGetAllScheduleQuery({});
@@ -20,7 +25,7 @@ const SchedulesPage = () => {
   const schedules = data?.schedules;
   const meta = data?.meta;
 
-  console.log(schedules);
+  // console.log(schedules);
 
   useEffect(() => {
     const updateData = schedules?.map((schedule: ISchedule, index: number) => {
@@ -36,6 +41,18 @@ const SchedulesPage = () => {
     setAllSchedule(updateData);
   }, [schedules]);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteSchedule(id).unwrap();
+      if (res?.id) {
+        toast.success("Schedule deleted successfully.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  };
+
   const columns: GridColDef[] = [
     { field: "sl", headerName: "SL" },
     { field: "startDate", headerName: "Date", flex: 1 },
@@ -50,7 +67,10 @@ const SchedulesPage = () => {
       renderCell: ({ row }) => {
         return (
           <Box>
-            <IconButton aria-label="delete">
+            <IconButton
+              aria-label="delete"
+              onClick={() => handleDelete(row.id)}
+            >
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
             <IconButton aria-label="edit">
