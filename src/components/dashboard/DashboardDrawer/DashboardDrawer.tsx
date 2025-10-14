@@ -11,7 +11,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Sidebar from "../Sidebar/Sidebar";
 import { useGetSingleUserQuery } from "@/redux/api/userApi";
-
+import { Avatar, Badge, Stack } from "@mui/material";
+import AccountMenu from "../AccountMenu/AccountMenu";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 const drawerWidth = 240;
 
 export default function DashboardDrawer({
@@ -61,13 +63,41 @@ export default function DashboardDrawer({
           >
             <MenuIcon />
           </IconButton>
-          <Box>
-            <Typography variant="body2" component="p" color="textSecondary">
-              Hi, {isLoading ? "Loading..." : data?.name}
-            </Typography>
-            <Typography variant="body2" component="p" color="primary.main">
-              Welcome to MUI Healthcare.
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                sx={{ color: "rgba(11, 17, 52, 0.6)" }}
+              >
+                Hi, {isLoading ? "Loading..." : data?.name},
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ color: "primary.main" }}
+              >
+                Welcome to MUI Health Care!
+              </Typography>
+            </Box>
+            <Stack direction="row" gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon color="action" />
+                </IconButton>
+              </Badge>
+              <Avatar alt={data?.name} src={data?.profilePhoto} />
+              <AccountMenu />
+            </Stack>
           </Box>
         </Toolbar>
       </AppBar>
