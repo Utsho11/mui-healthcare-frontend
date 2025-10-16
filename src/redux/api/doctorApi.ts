@@ -63,5 +63,6 @@ export const {
   useCreateDoctorMutation,
   useGetAllDoctorsQuery,
   useDeleteDoctorMutation,
-  useGetDoctorQuery
+  useGetDoctorQuery,
+  useUpdateDoctorMutation
 } = doctorApi;
