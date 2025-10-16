@@ -11,6 +11,7 @@ import DoctorModal from "./components/DoctorModal";
 import { useState } from "react";
 import type { GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   useDeleteDoctorMutation,
@@ -18,6 +19,7 @@ import {
 } from "@/redux/api/doctorApi";
 import { useDebounced } from "@/redux/hooks";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const DoctorsPage = () => {
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -39,7 +41,7 @@ const DoctorsPage = () => {
   const doctors = data?.doctors;
   const meta = data?.meta;
 
-  console.log(data);
+  // console.log(data);
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "Name", flex: 1 },
@@ -62,6 +64,12 @@ const DoctorsPage = () => {
             >
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
+            <Link
+              href={`/dashboard/admin/doctors/edit/${row.id}`}
+              aria-label="delete"
+            >
+              <EditIcon sx={{ color: "black" }} />
+            </Link>
           </Box>
         );
       },
