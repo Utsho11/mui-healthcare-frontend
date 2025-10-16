@@ -60,14 +60,14 @@ export default function AccountMenu() {
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip
           title="Account settings"
-          componentsProps={{
-            tooltip: {
-              sx: {
-                bgcolor: "#cdd1da5c",
-                color: "primary.main", // Change text color if necessary
-              },
-            },
-          }}
+          // componentsProps={{
+          //   tooltip: {
+          //     sx: {
+          //       bgcolor: "#cdd1da5c",
+          //       color: "primary.main", // Change text color if necessary
+          //     },
+          //   },
+          // }}
         >
           <IconButton
             onClick={handleClick}
