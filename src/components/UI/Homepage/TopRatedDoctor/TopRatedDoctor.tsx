@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
+import Link from "next/link";
 
 const TopRatedDoctor = async () => {
   const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
@@ -104,14 +105,16 @@ const TopRatedDoctor = async () => {
             textAlign: "center",
           }}
         >
-          <Button
-            variant="outlined"
-            sx={{
-              marginTop: "20px",
-            }}
-          >
-            View ALL
-          </Button>
+          <Link href="/doctors">
+            <Button
+              variant="outlined"
+              sx={{
+                marginTop: "20px",
+              }}
+            >
+              View ALL
+            </Button>
+          </Link>
         </Box>
       </Container>
     </Box>
