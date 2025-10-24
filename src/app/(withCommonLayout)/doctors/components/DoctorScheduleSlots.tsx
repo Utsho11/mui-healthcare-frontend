@@ -11,12 +11,15 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { useState } from "react";
+import { useCreateAppointmentMutation } from "@/redux/api/appoinmentApi";
+import { useInitialPaymentMutation } from "@/redux/api/paymentApi";
+import { useRouter } from "next/navigation";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const DoctorScheduleSlots = ({ id }: { id: string }) => {
   const [scheduleId, setScheduleId] = useState("");
-
+  const router = useRouter();
   const query: Record<string, any> = {};
 
   query["doctorId"] = id;
@@ -37,13 +40,13 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
     .millisecond(999)
     .toISOString();
 
-//   console.log({ query });
+  //   console.log({ query });
 
   const { data, isLoading } = useGetAllDoctorSchedulesQuery({ ...query });
 
   const doctorSchedules = data?.doctorSchedules;
 
-//   console.log({ doctorSchedules });
+  //   console.log({ doctorSchedules });
 
   const currentDate = new Date();
   const today = currentDate.toLocaleDateString("en-US", { weekday: "long" });
@@ -70,7 +73,7 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
     .millisecond(999)
     .toISOString();
 
-//   console.log("queryt", query);
+  //   console.log("queryt", query);
 
   const { data: tomorrowScheduleData } = useGetAllDoctorSchedulesQuery({
     ...query,
@@ -89,9 +92,45 @@ const DoctorScheduleSlots = ({ id }: { id: string }) => {
     weekday: "long",
   });
 
-//   console.log({ availableSlotsForTomorrow });
+  //   console.log({ availableSlotsForTomorrow });
 
-  const handleBookAppointment = async () => {};
+  const [createAppointment] = useCreateAppointmentMutation();
+  const [initialPayment] = useInitialPaymentMutation();
+
+  const handleBookAppointment = async () => {
+    try {
+      console.log({ id, scheduleId });
+
+      if (id && scheduleId) {
+        const res = await createAppointment({
+          doctorId: id,
+          scheduleId,
+        }).unwrap();
+
+        // console.log("res1:", res);
+
+        if (res.id) {
+          const response = await initialPayment(res.id).unwrap();
+          // console.log({ response });
+
+          if (response.paymentUrl && response.paymentUrl !== null) {
+            // console.log(response.paymentUrl);
+            router.push(response.paymentUrl);
+          } else {
+            console.error("Payment URL is null or undefined");
+            // You could add a toast notification here to inform the user
+            alert(
+              "Payment service is currently unavailable. Please try again later."
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      // Add user-friendly error message
+      alert("Failed to create appointment. Please try again.");
+    }
+  };
 
   return (
     <Box mb={5}>
